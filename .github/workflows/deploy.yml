@@ -51,8 +51,16 @@ jobs:
       - name: Skip when Railway token is missing
         if: ${{ env.RAILWAY_TOKEN == '' }}
         run: echo "RAILWAY_TOKEN is not configured; skipping backend deploy."
-      - name: Deploy to Railway
+      - name: Validate Railway token
+        id: railway-auth
         if: ${{ env.RAILWAY_TOKEN != '' }}
+        continue-on-error: true
+        run: railway whoami >/dev/null
+      - name: Skip when Railway token is invalid
+        if: ${{ env.RAILWAY_TOKEN != '' && steps.railway-auth.outcome != 'success' }}
+        run: echo "RAILWAY_TOKEN is invalid or unauthorized; skipping backend deploy."
+      - name: Deploy to Railway
+        if: ${{ env.RAILWAY_TOKEN != '' && steps.railway-auth.outcome == 'success' }}
         run: railway up --service careertwin-backend
 
   # ── Deploy frontend to Vercel ─────────────────────────────────────────────
