@@ -489,7 +489,7 @@ export function Interview() {
 // ─── Profile.jsx ──────────────────────────────────────────────────────────────
 import { authAPI } from '../services/api'
 import { useAuth } from '../context/AuthContext'
-import { Save, Github, Linkedin, Code2, User, Briefcase as BriefcaseIcon, GraduationCap } from 'lucide-react'
+import { Save, Github, Linkedin, User, Briefcase as BriefcaseIcon, GraduationCap } from 'lucide-react'
 
 export function Profile() {
   const { user, updateUser } = useAuth()
